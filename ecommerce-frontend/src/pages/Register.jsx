@@ -2,28 +2,26 @@ import { useState } from "react"
 import { API_URL } from "../services/api"
 import { useNavigate } from "react-router-dom"
 
-function Login() {
+function Register() {
+    const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault()
 
-        const res = await fetch(`${API_URL}/auth/login`, {
+        const res = await fetch(`${API_URL}/auth/register`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password })
         })
 
         const data = await res.json()
 
         if (res.ok) {
-            localStorage.setItem("token", data.token)
-            localStorage.setItem("user", JSON.stringify(data.user))
-            navigate("/")
+            alert("Registered successfully. Please login.")
+            navigate("/login")
         } else {
             alert(data.message)
         }
@@ -33,10 +31,18 @@ function Login() {
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-sm border border-gray-200">
                 <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-                    Sign in to your account
+                    Create Account
                 </h2>
 
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleRegister} className="space-y-4">
+                    <input
+                        type="text"
+                        placeholder="Full Name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+
                     <input
                         type="email"
                         placeholder="Email"
@@ -54,25 +60,12 @@ function Login() {
                     />
 
                     <button className="w-full bg-gray-800 text-white py-2 rounded-md">
-                        Login
+                        Register
                     </button>
-
-                    <p className="text-sm text-center mt-4">
-                        Don't have an account?{" "}
-                        <span
-                            className="text-gray-800 cursor-pointer"
-                            onClick={() => navigate("/register")}
-                        >
-                            Register
-                        </span>
-                    </p>
-
                 </form>
             </div>
         </div>
     )
 }
 
-export default Login
-
-
+export default Register
