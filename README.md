@@ -3,11 +3,12 @@
 This is a full-stack E-Commerce web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js).
 
 ## 📁 Project Structure
+```
 mentormind/
 │
-├── ecommerce-frontend/ → React + Tailwind frontend
-├── server/ → Node.js + Express backend
-
+├── ecommerce-frontend/   → React + Tailwind frontend
+├── server/               → Node.js + Express backend
+```
 
 ---
 
@@ -71,9 +72,11 @@ MongoDB Atlas is used as cloud database.
 ## 🔐 Environment Variables
 
 Create `.env` file inside `/server`:
+
+```
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret
-
+```
 
 ---
