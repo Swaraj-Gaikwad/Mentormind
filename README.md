@@ -50,16 +50,19 @@ Backend:
 ## 🛠 How to Run Locally
 
 ### 1️⃣ Start Backend
+
+```
 cd server
 npm install
 npm start
-
+```
 
 ### 2️⃣ Start Frontend
+```
 cd ecommerce-frontend
 npm install
 npm run dev
-
+```
 
 ---
 
