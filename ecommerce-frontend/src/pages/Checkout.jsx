@@ -32,8 +32,7 @@ function Checkout() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navbar />
+            
 
             <div className="max-w-7xl mx-auto px-6 py-8">
                 <div className="bg-white p-6 rounded-lg border border-gray-200 max-w-lg mx-auto">
@@ -59,7 +58,7 @@ function Checkout() {
 
                 </div>
             </div>
-        </div>
+        
     )
 }
 

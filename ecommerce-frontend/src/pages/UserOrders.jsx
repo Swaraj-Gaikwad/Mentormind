@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
 import { API_URL } from "../services/api"
 
 function UserOrders() {
@@ -21,20 +20,88 @@ function UserOrders() {
         fetchOrders()
     }, [])
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case "Shipped":
+                return "bg-green-100 text-green-700"
+            case "Pending":
+                return "bg-yellow-100 text-yellow-700"
+            case "Cancelled":
+                return "bg-red-100 text-red-700"
+            default:
+                return "bg-gray-100 text-gray-700"
+        }
+    }
+
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navbar />
+        <div>
+            <h2 className="text-3xl font-semibold mb-8 text-gray-900">
+                My Orders
+            </h2>
 
-            <div className="max-w-4xl mx-auto mt-10 space-y-4">
-                <h2 className="text-xl font-semibold">My Orders</h2>
+            {orders.length === 0 ? (
+                <div className="bg-white p-8 rounded-xl border text-gray-600 text-center shadow-sm">
+                    No orders placed yet.
+                </div>
+            ) : (
+                <div className="space-y-8">
+                    {orders.map((order) => (
+                        <div
+                            key={order._id}
+                            className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition"
+                        >
+                            {/* Top Section */}
+                            <div className="flex justify-between items-start mb-6">
+                                <div>
+                                    <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">
+                                        Order ID
+                                    </p>
+                                    <p className="font-semibold text-gray-800">
+                                        {order._id.slice(-6).toUpperCase()}
+                                    </p>
 
-                {orders.map((order) => (
-                    <div key={order._id} className="bg-white p-4 rounded border">
-                        <p><strong>Total:</strong> ₹{order.totalAmount}</p>
-                        <p><strong>Status:</strong> {order.status}</p>
-                    </div>
-                ))}
-            </div>
+                                    <p className="text-sm text-gray-500 mt-2">
+                                        {new Date(order.createdAt).toLocaleDateString()}
+                                    </p>
+                                </div>
+
+                                <span
+                                    className={`px-4 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}
+                                >
+                                    {order.status}
+                                </span>
+                            </div>
+
+                            {/* Items */}
+                            <div className="space-y-3 mb-6">
+                                {order.items.map((item) => (
+                                    <div
+                                        key={item.product._id}
+                                        className="flex justify-between text-gray-700"
+                                    >
+                                        <span>
+                                            {item.product.name} × {item.quantity}
+                                        </span>
+                                        <span className="font-medium">
+                                            ₹{item.price * item.quantity}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Divider */}
+                            <div className="border-t pt-4 flex justify-between items-center">
+                                <span className="text-lg font-semibold text-gray-800">
+                                    Total
+                                </span>
+                                <span className="text-lg font-bold text-gray-900">
+                                    ₹{order.totalAmount}
+                                </span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

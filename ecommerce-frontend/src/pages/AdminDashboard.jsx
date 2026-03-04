@@ -25,14 +25,12 @@ function AdminDashboard() {
 
     const token = localStorage.getItem("token")
 
-    // Fetch Products
     const fetchProducts = async () => {
         const res = await fetch(`${API_URL}/products`)
         const data = await res.json()
         setProducts(data)
     }
 
-    // Fetch Orders (Admin)
     const fetchOrders = async () => {
         const res = await fetch(`${API_URL}/orders/admin`, {
             headers: {
@@ -110,142 +108,145 @@ function AdminDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+        <div>
+
+            <h1 className="text-3xl font-semibold mb-8 text-gray-900">
+                Admin Dashboard
+            </h1>
 
             {/* Tabs */}
-            <div className="flex gap-4 mb-6">
-                <button onClick={() => setActiveTab("products")} className="px-4 py-2 bg-gray-800 text-white rounded">
+            <div className="flex gap-4 mb-8">
+                <button
+                    onClick={() => setActiveTab("products")}
+                    className={`px-4 py-2 rounded-md font-medium ${activeTab === "products"
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-200 text-gray-700"
+                        }`}
+                >
                     Inventory
                 </button>
-                <button onClick={() => setActiveTab("orders")} className="px-4 py-2 bg-gray-800 text-white rounded">
+
+                <button
+                    onClick={() => setActiveTab("orders")}
+                    className={`px-4 py-2 rounded-md font-medium ${activeTab === "orders"
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-200 text-gray-700"
+                        }`}
+                >
                     Orders
                 </button>
             </div>
 
             {/* PRODUCTS TAB */}
             {activeTab === "products" && (
-                <div className="space-y-6">
+                <div className="space-y-8">
 
-                    {/* Add Product Form */}
-                    <div className="bg-white p-4 rounded border space-y-3">
-                        <h2 className="font-semibold text-lg">Add New Product</h2>
+                    {/* Add Product */}
+                    <div className="bg-white p-6 rounded-xl border shadow-sm space-y-4">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                            Add New Product
+                        </h2>
 
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder="Product Name"
                             value={newProduct.name}
-                            onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                                setNewProduct({ ...newProduct, name: e.target.value })
+                            }
+                            className="border px-3 py-2 rounded-md w-full"
                         />
 
                         <input
                             type="number"
                             placeholder="Price"
                             value={newProduct.price}
-                            onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                                setNewProduct({ ...newProduct, price: e.target.value })
+                            }
+                            className="border px-3 py-2 rounded-md w-full"
                         />
 
                         <input
                             type="number"
                             placeholder="Stock"
                             value={newProduct.stock}
-                            onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                                setNewProduct({ ...newProduct, stock: e.target.value })
+                            }
+                            className="border px-3 py-2 rounded-md w-full"
                         />
 
                         <input
                             type="text"
                             placeholder="Category"
                             value={newProduct.category}
-                            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                                setNewProduct({ ...newProduct, category: e.target.value })
+                            }
+                            className="border px-3 py-2 rounded-md w-full"
                         />
 
                         <input
                             type="text"
                             placeholder="Image URL"
                             value={newProduct.image}
-                            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                            className="border px-2 py-1 w-full"
+                            onChange={(e) =>
+                                setNewProduct({ ...newProduct, image: e.target.value })
+                            }
+                            className="border px-3 py-2 rounded-md w-full"
                         />
 
-                        <button onClick={createProduct} className="px-4 py-2 bg-gray-800 text-white rounded">
+                        <button
+                            onClick={createProduct}
+                            className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-black"
+                        >
                             Add Product
                         </button>
                     </div>
 
                     {/* Product List */}
                     {products.map((product) => (
-                        <div key={product._id} className="bg-white p-4 rounded border">
+                        <div
+                            key={product._id}
+                            className="bg-white p-6 rounded-xl border shadow-sm flex justify-between items-center"
+                        >
+                            <div>
+                                <h3 className="font-semibold text-gray-900">
+                                    {product.name}
+                                </h3>
+                                <p className="text-gray-600">₹{product.price}</p>
+                                <p className="text-gray-500 text-sm">
+                                    Stock: {product.stock}
+                                </p>
 
-                            {editingProduct?._id === product._id ? (
-                                <div className="space-y-2">
-                                    <input
-                                        type="text"
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="border px-2 py-1 w-full"
+                                {product.image && (
+                                    <img
+                                        src={product.image}
+                                        alt=""
+                                        className="w-24 mt-3 rounded"
                                     />
-                                    <input
-                                        type="number"
-                                        value={formData.price}
-                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                        className="border px-2 py-1 w-full"
-                                    />
-                                    <input
-                                        type="number"
-                                        value={formData.stock}
-                                        onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                                        className="border px-2 py-1 w-full"
-                                    />
-                                    <input
-                                        type="text"
-                                        value={formData.image}
-                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                        className="border px-2 py-1 w-full"
-                                    />
+                                )}
+                            </div>
 
-                                    <button onClick={updateProduct} className="px-3 py-1 bg-green-600 text-white rounded">
-                                        Save
-                                    </button>
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={() => {
+                                        setEditingProduct(product)
+                                        setFormData(product)
+                                    }}
+                                    className="text-blue-600 font-medium"
+                                >
+                                    Edit
+                                </button>
 
-                                    <button onClick={() => setEditingProduct(null)} className="ml-2 text-gray-600">
-                                        Cancel
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h3 className="font-semibold">{product.name}</h3>
-                                        <p>₹{product.price}</p>
-                                        <p>Stock: {product.stock}</p>
-                                        {product.image && (
-                                            <img src={product.image} alt="" className="w-24 mt-2" />
-                                        )}
-                                    </div>
-
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setEditingProduct(product)
-                                                setFormData(product)
-                                            }}
-                                            className="text-blue-600"
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            onClick={() => deleteProduct(product._id)}
-                                            className="text-red-600"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
+                                <button
+                                    onClick={() => deleteProduct(product._id)}
+                                    className="text-red-600 font-medium"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
 
@@ -254,29 +255,43 @@ function AdminDashboard() {
 
             {/* ORDERS TAB */}
             {activeTab === "orders" && (
-                <div className="space-y-4">
-
-                    {orders.length === 0 && (
-                        <p>No orders found</p>
-                    )}
+                <div className="space-y-6">
 
                     {orders.map((order) => (
-                        <div key={order._id} className="bg-white p-4 rounded border">
-                            <p><strong>User:</strong> {order.user?.email}</p>
-                            <p><strong>Total:</strong> ₹{order.totalAmount}</p>
-                            <p><strong>Status:</strong> {order.status}</p>
+                        <div
+                            key={order._id}
+                            className="bg-white p-6 rounded-xl border shadow-sm"
+                        >
+                            <p className="text-gray-700">
+                                <strong>User:</strong> {order.user?.email}
+                            </p>
 
-                            <div className="flex gap-2 mt-2">
+                            <p className="text-gray-700">
+                                <strong>Total:</strong> ₹{order.totalAmount}
+                            </p>
+
+                            <p className="text-gray-700 mb-4">
+                                <strong>Status:</strong>{" "}
+                                <span className="font-medium">
+                                    {order.status}
+                                </span>
+                            </p>
+
+                            <div className="flex gap-3">
                                 <button
-                                    onClick={() => updateOrderStatus(order._id, "Shipped")}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                                    onClick={() =>
+                                        updateOrderStatus(order._id, "Shipped")
+                                    }
+                                    className="bg-blue-600 text-white px-3 py-1 rounded"
                                 >
                                     Mark Shipped
                                 </button>
 
                                 <button
-                                    onClick={() => updateOrderStatus(order._id, "Delivered")}
-                                    className="px-3 py-1 bg-green-600 text-white rounded"
+                                    onClick={() =>
+                                        updateOrderStatus(order._id, "Delivered")
+                                    }
+                                    className="bg-green-600 text-white px-3 py-1 rounded"
                                 >
                                     Mark Delivered
                                 </button>

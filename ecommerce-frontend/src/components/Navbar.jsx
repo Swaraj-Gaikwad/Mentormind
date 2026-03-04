@@ -23,52 +23,72 @@ function Navbar() {
     }
 
     return (
-        <header className="bg-white border-b border-gray-200">
+        <header className="bg-white border-b border-gray-200 shadow-sm">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-                <Link to="/" className="text-xl font-semibold text-gray-800">
+                {/* Logo */}
+                <Link
+                    to="/"
+                    className="text-2xl font-bold text-gray-900 tracking-tight"
+                >
                     ShopEase
                 </Link>
 
                 {/* Search */}
-                <form onSubmit={handleSearch} className="flex items-center gap-2">
+                <form
+                    onSubmit={handleSearch}
+                    className="flex items-center bg-gray-100 rounded-lg overflow-hidden"
+                >
                     <input
                         type="text"
                         placeholder="Search products..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="border px-3 py-1 rounded-md"
+                        className="bg-transparent px-4 py-2 w-64 outline-none text-sm"
                     />
-                    <button className="bg-gray-800 text-white px-3 py-1 rounded-md">
+                    <button className="bg-gray-900 text-white px-4 py-2 text-sm hover:bg-black transition">
                         Search
                     </button>
                 </form>
 
-                <div className="flex items-center gap-6">
+                {/* Right Section */}
+                <div className="flex items-center gap-6 text-sm font-medium">
 
-                    <Link to="/cart" className="text-gray-700">
+                    <Link
+                        to="/cart"
+                        className="text-gray-700 hover:text-black transition"
+                    >
                         Cart
                     </Link>
 
                     {user?.role === "user" && (
-                        <Link to="/orders" className="text-gray-700">
+                        <Link
+                            to="/orders"
+                            className="text-gray-700 hover:text-black transition"
+                        >
                             My Orders
                         </Link>
                     )}
 
                     {user?.role === "admin" && (
-                        <Link to="/admin" className="text-gray-700">
-                            Admin Dashboard
+                        <Link
+                            to="/admin"
+                            className="text-gray-700 hover:text-black transition"
+                        >
+                            Admin
                         </Link>
                     )}
 
-                    <Link to="/profile" className="text-gray-700">
-                        Profile
+                    <Link
+                        to="/profile"
+                        className="text-gray-700 hover:text-black transition"
+                    >
+                        Account
                     </Link>
 
                     <button
                         onClick={logout}
-                        className="text-red-600"
+                        className="bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition"
                     >
                         Logout
                     </button>

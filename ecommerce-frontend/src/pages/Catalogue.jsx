@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
 import { API_URL } from "../services/api"
 import { useLocation } from "react-router-dom"
+import Hero from "../components/Hero"
 
 function Catalogue() {
     const [products, setProducts] = useState([])
@@ -11,7 +11,6 @@ function Catalogue() {
     const searchQuery =
         new URLSearchParams(location.search).get("search") || ""
 
-    // Fetch Products
     useEffect(() => {
         const fetchProducts = async () => {
             const res = await fetch(`${API_URL}/products`)
@@ -22,15 +21,14 @@ function Catalogue() {
         fetchProducts()
     }, [])
 
-    // Extract unique categories dynamically
     const categories = [
         ...new Set(products.map((p) => p.category).filter(Boolean)),
     ]
 
-    // Combined Filtering (Search + Category)
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (selectedCategory === "" || product.category === selectedCategory)
+    const filteredProducts = products.filter(
+        (product) =>
+            product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+            (selectedCategory === "" || product.category === selectedCategory)
     )
 
     const addToCart = async (productId) => {
@@ -48,32 +46,30 @@ function Catalogue() {
             }),
         })
 
-        const data = await res.json()
-
         if (res.ok) {
             alert("Added to cart")
-        } else {
-            alert(data.message)
         }
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navbar />
+        <div className="space-y-10">
 
-            <div className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+            
+            <Hero />
 
-                {/* Sidebar */}
-                <aside className="w-64 bg-white p-6 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-semibold mb-4 text-gray-800">
+            
+            <div className="flex gap-10">
+
+                
+                <aside className="w-64 bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit">
+                    <h3 className="text-lg font-semibold mb-6 text-gray-900">
                         Categories
                     </h3>
 
-                    <ul className="space-y-3 text-gray-600">
-
+                    <ul className="space-y-4 text-gray-600">
                         <li
                             onClick={() => setSelectedCategory("")}
-                            className={`cursor-pointer hover:text-gray-900 ${selectedCategory === "" ? "font-semibold text-black" : ""
+                            className={`cursor-pointer transition hover:text-black ${selectedCategory === "" ? "font-semibold text-black" : ""
                                 }`}
                         >
                             All
@@ -83,59 +79,71 @@ function Catalogue() {
                             <li
                                 key={index}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`cursor-pointer hover:text-gray-900 ${selectedCategory === cat ? "font-semibold text-black" : ""
+                                className={`cursor-pointer transition hover:text-black ${selectedCategory === cat ? "font-semibold text-black" : ""
                                     }`}
                             >
                                 {cat}
                             </li>
                         ))}
-
                     </ul>
                 </aside>
 
-                {/* Products Grid */}
-                <main className="flex-1 grid grid-cols-3 gap-6">
+                
+                <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
                     {filteredProducts.length === 0 ? (
-                        <div className="col-span-3 text-center text-gray-600">
+                        <div className="col-span-full text-center text-gray-500 bg-white p-10 rounded-xl border shadow-sm">
                             No products found
                         </div>
                     ) : (
                         filteredProducts.map((product) => (
                             <div
                                 key={product._id}
-                                className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-sm transition"
+                                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-300"
                             >
                                 {product.image ? (
                                     <img
                                         src={product.image}
                                         alt={product.name}
-                                        className="h-40 w-full object-cover rounded-md mb-4"
+                                        className="h-56 w-full object-cover"
                                     />
                                 ) : (
-                                    <div className="h-40 bg-gray-200 rounded-md mb-4"></div>
+                                    <div className="h-56 bg-gray-200"></div>
                                 )}
 
-                                <h4 className="text-gray-800 font-medium mb-2">
-                                    {product.name}
-                                </h4>
+                                <div className="p-5">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
+                                        {product.name}
+                                    </h4>
 
-                                <p className="text-gray-600 mb-3">
-                                    ₹{product.price}
-                                </p>
+                                    <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                                        {product.description}
+                                    </p>
 
-                                <button
-                                    onClick={() => addToCart(product._id)}
-                                    className="w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
-                                >
-                                    Add to Cart
-                                </button>
+                                    <div className="flex justify-between items-center mb-4">
+                                        <span className="text-xl font-bold text-gray-900">
+                                            ₹{product.price}
+                                        </span>
+
+                                        <span className="text-sm text-gray-500">
+                                            Stock: {product.stock}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        onClick={() => addToCart(product._id)}
+                                        className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-black transition"
+                                    >
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
                         ))
                     )}
 
                 </main>
             </div>
+
         </div>
     )
 }
