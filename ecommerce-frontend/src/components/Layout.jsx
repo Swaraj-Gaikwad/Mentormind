@@ -1,5 +1,6 @@
 import Navbar from "./Navbar"
 import { Outlet } from "react-router-dom"
+import Footer from "./Footer"
 
 function Layout() {
   return (
@@ -9,6 +10,8 @@ function Layout() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <Outlet />
       </div>
+
+      <Footer />
     </div>
   )
 }

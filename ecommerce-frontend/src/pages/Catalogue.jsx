@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { API_URL } from "../services/api"
 import { useLocation } from "react-router-dom"
 import Hero from "../components/Hero"
+import FeaturedProducts from "../components/FeaturedProducts"
 
 function Catalogue() {
     const [products, setProducts] = useState([])
@@ -54,13 +55,14 @@ function Catalogue() {
     return (
         <div className="space-y-10">
 
-            
+            {/* Hero Section */}
             <Hero />
 
-            
+            <FeaturedProducts />
+
             <div className="flex gap-10">
 
-                
+                {/* Sidebar */}
                 <aside className="w-64 bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit">
                     <h3 className="text-lg font-semibold mb-6 text-gray-900">
                         Categories
@@ -88,60 +90,70 @@ function Catalogue() {
                     </ul>
                 </aside>
 
-                
-                <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Products Section */}
+                <div className="flex-1">
 
-                    {filteredProducts.length === 0 ? (
-                        <div className="col-span-full text-center text-gray-500 bg-white p-10 rounded-xl border shadow-sm">
-                            No products found
-                        </div>
-                    ) : (
-                        filteredProducts.map((product) => (
-                            <div
-                                key={product._id}
-                                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-300"
-                            >
-                                {product.image ? (
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        className="h-56 w-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="h-56 bg-gray-200"></div>
-                                )}
+                    {/* Section Title */}
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                        {selectedCategory ? selectedCategory : "All Products"}
+                    </h2>
 
-                                <div className="p-5">
-                                    <h4 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
-                                        {product.name}
-                                    </h4>
+                    {/* Products Grid */}
+                    <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                                    <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-                                        {product.description}
-                                    </p>
-
-                                    <div className="flex justify-between items-center mb-4">
-                                        <span className="text-xl font-bold text-gray-900">
-                                            ₹{product.price}
-                                        </span>
-
-                                        <span className="text-sm text-gray-500">
-                                            Stock: {product.stock}
-                                        </span>
-                                    </div>
-
-                                    <button
-                                        onClick={() => addToCart(product._id)}
-                                        className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-black transition"
-                                    >
-                                        Add to Cart
-                                    </button>
-                                </div>
+                        {filteredProducts.length === 0 ? (
+                            <div className="col-span-full text-center text-gray-500 bg-white p-10 rounded-xl border shadow-sm">
+                                No products found
                             </div>
-                        ))
-                    )}
+                        ) : (
+                            filteredProducts.map((product) => (
+                                <div
+                                    key={product._id}
+                                    className="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
+                                >
+                                    {product.image ? (
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="h-56 w-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="h-56 bg-gray-200"></div>
+                                    )}
 
-                </main>
+                                    <div className="p-5">
+                                        <h4 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
+                                            {product.name}
+                                        </h4>
+
+                                        <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                                            {product.description}
+                                        </p>
+
+                                        <div className="flex justify-between items-center mb-4">
+                                            <span className="text-xl font-bold text-gray-900">
+                                                ₹{product.price}
+                                            </span>
+
+                                            <span className="text-sm text-gray-500">
+                                                Stock: {product.stock}
+                                            </span>
+                                        </div>
+
+                                        <button
+                                            onClick={() => addToCart(product._id)}
+                                            className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-black transition"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+
+                    </main>
+
+                </div>
             </div>
 
         </div>
